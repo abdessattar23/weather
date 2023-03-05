@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="robots" content="follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large"/>
+    <meta name="description" content="Weather website Free and Easy to use !"/>
+    <meta name="author" content="Abdessattar Elyagoubi" />
+    <link rel="canonical" href="https://wikiweather.netlify.app" />
     <title>Wiki Weather</title>
+    <link rel="icon" type="image/png" href="/images/fav.png">
     <style>
     /* Body styles */
 body {
@@ -106,10 +111,34 @@ button[type="submit"]:hover {
       <p>Feels Like: <span id="precipitation"></span></p>
       <p>Humidity: <span id="humidity"></span></p>
       <p>Wind: <span id="wind"></span></p>
-      <p>Clouds: <span id="observation"></span></p>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+      var ipCity;
+      const xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      ipity = JSON.parse(this.responseText);
+      ipCity = ipity.city;
+      $.ajax({
+    method: 'GET',
+    url: 'https://api.api-ninjas.com/v1/weather?city=' + ipCity,
+    headers: { 'X-Api-Key': 'ax8Fu/Oy6Qb8c8wj8aDyJQ==usUKVIG79ZIIe12I'},
+    contentType: 'application/json',
+    success: function(result) {
+        console.log(result);
+      data = result;
+      displayWeather(result, ipCity);
+    },
+    error: function ajaxError(jqXHR) {
+        console.error('Error: ', jqXHR.responseText);
+    }
+});
+      });
+    }
+  };
+  xhttp.open("GET", "https://api.ipdata.co/?api-key=039310658d62e9a1260c7f070e0e76dc396f0d25b317fcd4bf3d7b18");
+  xhttp.send();
       const form = document.getElementById('weather-form');
       const cityInput = document.getElementById('city-input');
       var data;
@@ -138,7 +167,6 @@ button[type="submit"]:hover {
         document.getElementById('precipitation').textContent = result.feels_like;
         document.getElementById('humidity').textContent = result.humidity;
         document.getElementById('wind').textContent = result.wind_speed;
-        document.getElementById('observation').textContent = result.clouds_pct;
       } 
 
     </script>
