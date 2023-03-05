@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Wiki Weather</title>
+    <style>
+    /* Body styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #F5F5F5;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Heading styles */
+h1, h2 {
+  font-weight: bold;
+  text-align: center;
+}
+
+h1 {
+  font-size: 3rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Form styles */
+form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+label {
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+input[type="text"] {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 2px solid #333;
+  border-radius: 0.5rem;
+}
+
+button[type="submit"] {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button[type="submit"]:hover {
+  background-color: #666;
+}
+
+/* Weather display styles */
+#weather-display {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+#city {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+#temperature, #precipitation, #humidity, #wind, #observation {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+#temperature::after {
+  content: "°C";
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 600px) {
+  form {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+    </style>
+  </head>
+  <body>
+    <h1>Weather App</h1>
+    <form id="weather-form">
+      <label for="city-input">Enter city name:</label>
+      <input type="text" id="city-input" name="city-input">
+      <button type="submit">Get Weather</button>
+    </form>
+    <div id="weather-display">
+      <h2 id="city"></h2>
+      <p>Temperature: <span id="temperature"></span></p>
+      <p>Precipitation: <span id="precipitation"></span></p>
+      <p>Humidity: <span id="humidity"></span></p>
+      <p>Wind: <span id="wind"></span></p>
+      <p>Observation: <span id="observation"></span></p>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cheerio@1.0.0/dist/cheerio.min.js"></script>
+    <script>
+      const form = document.getElementById('weather-form');
+      const cityInput = document.getElementById('city-input');
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const city = cityInput.value;
+        const userInfo = await getUserInfo(city);
+        displayWeather(userInfo, city);
+      });
+
+      async function getUserInfo(city) {
+        const url = `https://www.google.com/?q=${city}+weather/`;
+        const response = await axios.get(url);
+        const html = response.data;
+        const $ = cheerio.load(html);
+
+        const temperature = $('#wob_tm').text();
+        const precipitation = $('#wob_pp').text();
+        const humidity = $('#wob_hm').text();
+        const wind = $('#wob_ws').text();
+        const observation = $('#wob_dc').text();
+        const all = $('#wob_wc');
+
+        const userInfo = {
+          temperature,
+          precipitation,
+          humidity,
+          wind,
+          observation
+        };
+
+        return userInfo;
+      }
+
+      function displayWeather(userInfo, city) {
+        document.getElementById('city').textContent = city;
+        document.getElementById('temperature').textContent = userInfo.temperature;
+        document.getElementById('precipitation').textContent = userInfo.precipitation;
+        document.getElementById('humidity').textContent = userInfo.humidity;
+        document.getElementById('wind').textContent = userInfo.wind;
+        document.getElementById('observation').textContent = userInfo.observation;
+      }
+    </script>
+  </body>
+</html>
