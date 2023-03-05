@@ -1,0 +1,15 @@
+{
+  "name": "wiki-weather",
+  "version": "1.0.0",
+  "description": "wiki-weather is a light, simple and fast weather app",
+  "main": "index.js",
+  "dependencies": {
+    "node-fetch": "^3.1.0",
+    "cheerio": "^1.0.0-rc.3"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Abdessattar Elyagoubi",
+  "license": "ISC"
+}
