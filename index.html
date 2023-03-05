@@ -112,7 +112,7 @@ button[type="submit"]:hover {
     <script>
       const form = document.getElementById('weather-form');
       const cityInput = document.getElementById('city-input');
-
+      var data;
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
         const city = cityInput.value;
@@ -123,12 +123,16 @@ button[type="submit"]:hover {
     contentType: 'application/json',
     success: function(result) {
         console.log(result);
+      data = result;
+      displayWeather(result, city);
     },
     error: function ajaxError(jqXHR) {
         console.error('Error: ', jqXHR.responseText);
     }
 });
       });
+      
+      
 
     </script>
   </body>
