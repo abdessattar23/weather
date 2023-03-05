@@ -103,10 +103,10 @@ button[type="submit"]:hover {
     <div id="weather-display">
       <h2 id="city"></h2>
       <p>Temperature: <span id="temperature"></span></p>
-      <p>Precipitation: <span id="precipitation"></span></p>
+      <p>Feels Like: <span id="precipitation"></span></p>
       <p>Humidity: <span id="humidity"></span></p>
       <p>Wind: <span id="wind"></span></p>
-      <p>Observation: <span id="observation"></span></p>
+      <p>Clouds: <span id="observation"></span></p>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -132,7 +132,14 @@ button[type="submit"]:hover {
 });
       });
       
-      
+     function displayWeather(result, city) {
+        document.getElementById('city').textContent = city;
+        document.getElementById('temperature').textContent = result.temp;
+        document.getElementById('precipitation').textContent = result.feels_like;
+        document.getElementById('humidity').textContent = result.humidity;
+        document.getElementById('wind').textContent = result.wind_speed;
+        document.getElementById('observation').textContent = result.clouds_pct;
+      } 
 
     </script>
   </body>
