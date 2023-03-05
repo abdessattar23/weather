@@ -108,9 +108,7 @@ button[type="submit"]:hover {
       <p>Wind: <span id="wind"></span></p>
       <p>Observation: <span id="observation"></span></p>
     </div>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/cheerio@1.0.0/dist/cheerio.min.js"></script>
     <script>
       const form = document.getElementById('weather-form');
       const cityInput = document.getElementById('city-input');
@@ -118,42 +116,20 @@ button[type="submit"]:hover {
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
         const city = cityInput.value;
-        const userInfo = await getUserInfo(city);
-        displayWeather(userInfo, city);
+        $.ajax({
+    method: 'GET',
+    url: 'https://api.api-ninjas.com/v1/weather?city=' + city,
+    headers: { 'X-Api-Key': 'ax8Fu/Oy6Qb8c8wj8aDyJQ==usUKVIG79ZIIe12I'},
+    contentType: 'application/json',
+    success: function(result) {
+        console.log(result);
+    },
+    error: function ajaxError(jqXHR) {
+        console.error('Error: ', jqXHR.responseText);
+    }
+});
       });
 
-      async function getUserInfo(city) {
-        const url = `https://www.google.com/?q=${city}+weather/`;
-        const response = await axios.get(url);
-        const html = response.data;
-        const $ = cheerio.load(html);
-
-        const temperature = $('#wob_tm').text();
-        const precipitation = $('#wob_pp').text();
-        const humidity = $('#wob_hm').text();
-        const wind = $('#wob_ws').text();
-        const observation = $('#wob_dc').text();
-        const all = $('#wob_wc');
-
-        const userInfo = {
-          temperature,
-          precipitation,
-          humidity,
-          wind,
-          observation
-        };
-
-        return userInfo;
-      }
-
-      function displayWeather(userInfo, city) {
-        document.getElementById('city').textContent = city;
-        document.getElementById('temperature').textContent = userInfo.temperature;
-        document.getElementById('precipitation').textContent = userInfo.precipitation;
-        document.getElementById('humidity').textContent = userInfo.humidity;
-        document.getElementById('wind').textContent = userInfo.wind;
-        document.getElementById('observation').textContent = userInfo.observation;
-      }
     </script>
   </body>
 </html>
