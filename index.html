@@ -135,9 +135,9 @@ button[type="submit"]:hover {
         console.error('Error: ', jqXHR.responseText);
     }
 });
-      });
+      };
     }
-  };
+  
   xhttp.open("GET", "https://api.ipdata.co/?api-key=039310658d62e9a1260c7f070e0e76dc396f0d25b317fcd4bf3d7b18");
   xhttp.send();
       const form = document.getElementById('weather-form');
@@ -159,7 +159,7 @@ button[type="submit"]:hover {
     error: function ajaxError(jqXHR) {
         console.error('Error: ', jqXHR.responseText);
     }
-});
+        });
       });
       
      function displayWeather(result, city) {
